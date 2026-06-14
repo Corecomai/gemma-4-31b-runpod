@@ -1,0 +1,51 @@
+{
+  "containerDiskInGb": 50,
+  "minVolumeInGb": 10,
+  "volumeInGb": 50,
+  "containerRegistry": "runpod/vllm:latest",
+  "env": [
+    {
+      "key": "MODEL_NAME",
+      "value": "google/gemma-4-31b-it"
+    },
+    {
+      "key": "QUANTIZATION",
+      "value": "int4"
+    },
+    {
+      "key": "TENSOR_PARALLEL_SIZE",
+      "value": "1"
+    },
+    {
+      "key": "MAX_MODEL_LEN",
+      "value": "32768"
+    },
+    {
+      "key": "GPU_MEMORY_UTILIZATION",
+      "value": "0.90"
+    },
+    {
+      "key": "MAX_NUM_SEQS",
+      "value": "64"
+    },
+    {
+      "key": "VLLM_WORKER_MULTIPROC_METHOD",
+      "value": "spawn"
+    },
+    {
+      "key": "CUDA_LAUNCH_BLOCKING",
+      "value": "1"
+    },
+    {
+      "key": "HF_TOKEN",
+      "value": "YOUR_HF_TOKEN_HERE"
+    }
+  ],
+  "gpuTypes": ["A100"],
+  "minWorkers": 1,
+  "maxWorkers": 3,
+  "template": {
+    "name": "Gemma-4-31B-it",
+    "description": "Google Gemma-4-31B instruction-tuned model with vLLM"
+  }
+}
