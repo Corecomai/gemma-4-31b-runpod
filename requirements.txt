@@ -1,0 +1,11 @@
+vllm==0.6.4
+torch==2.4.0
+transformers==4.46.0
+peft==0.11.1
+bitsandbytes==0.44.1
+scipy==1.14.1
+numpy==1.26.4
+pydantic==2.7.1
+fastapi==0.104.1
+uvicorn==0.24.0
+python-dotenv==1.0.0
