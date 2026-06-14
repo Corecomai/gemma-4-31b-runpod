@@ -74,3 +74,32 @@ jobs:
               print('ERROR:', d['errors']); exit(1)
           print('✅ Deployed:', d['data']['saveTemplate']['imageName'])
           "
+
+  update-pod:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ vars.RUNPOD_POD_ID != '' }}
+
+    steps:
+      - name: Update RunPod Pod container image
+        env:
+          RUNPOD_API_KEY: ${{ secrets.RUNPOD_API_KEY }}
+          POD_ID: ${{ vars.RUNPOD_POD_ID }}
+        run: |
+          IMAGE="ghcr.io/corecomai/gemma-4-31b-runpod:latest"
+          echo "Updating Pod ${POD_ID} to image: ${IMAGE}"
+
+          RESPONSE=$(curl -s "https://api.runpod.io/graphql?api_key=${RUNPOD_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"query\": \"mutation { podUpdateContainerImage(input: { podId: \\\"${POD_ID}\\\", imageName: \\\"${IMAGE}\\\" }) { id imageName } }\"
+            }")
+
+          echo "$RESPONSE"
+          echo "$RESPONSE" | python3 -c "
+          import json, sys
+          d = json.load(sys.stdin)
+          if 'errors' in d:
+              print('⚠️  Pod update skipped (variable not set)'); exit(0)
+          print('✅ Pod image updated:', d['data']['podUpdateContainerImage']['imageName'])
+          " || true
