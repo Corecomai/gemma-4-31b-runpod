@@ -1,0 +1,53 @@
+════════════════════════════════════════════════════════════════════
+COPY-PASTE ENVIRONMENT VARIABLES FOR RUNPOD ENDPOINT
+════════════════════════════════════════════════════════════════════
+
+Go to: https://console.runpod.io/serverless/user/endpoint/oodajsphk20uyr
+
+Click: Settings or Config tab
+
+Copy-paste each line below into your endpoint config:
+
+────────────────────────────────────────────────────────────────────
+VARIABLE 1:
+Key:   MODEL_NAME
+Value: google/gemma-4-31b-it
+
+VARIABLE 2:
+Key:   QUANTIZATION
+Value: int4
+
+VARIABLE 3:
+Key:   TENSOR_PARALLEL_SIZE
+Value: 1
+
+VARIABLE 4:
+Key:   MAX_MODEL_LEN
+Value: 32768
+
+VARIABLE 5:
+Key:   GPU_MEMORY_UTILIZATION
+Value: 0.90
+
+VARIABLE 6:
+Key:   MAX_NUM_SEQS
+Value: 64
+
+VARIABLE 7:
+Key:   VLLM_WORKER_MULTIPROC_METHOD
+Value: spawn
+
+VARIABLE 8:
+Key:   CUDA_LAUNCH_BLOCKING
+Value: 1
+
+VARIABLE 9:
+Key:   HF_TOKEN
+Value: your_hugging_face_token_here
+
+────────────────────────────────────────────────────────────────────
+
+Then click: Save/Apply/Deploy
+
+That's it!
+════════════════════════════════════════════════════════════════════
