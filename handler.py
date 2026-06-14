@@ -34,7 +34,6 @@ class vLLMEngine:
         self.max_model_len = int(os.getenv('MAX_MODEL_LEN', '32768'))
         self.gpu_memory_utilization = float(os.getenv('GPU_MEMORY_UTILIZATION', '0.90'))
         self.max_num_seqs = int(os.getenv('MAX_NUM_SEQS', '64'))
-        self.max_tokens_per_batch = int(os.getenv('MAX_TOKENS_PER_BATCH', '16384'))
 
         logger.info(f"Engine config: {self.get_config()}")
 
@@ -46,7 +45,6 @@ class vLLMEngine:
             max_model_len=self.max_model_len,
             gpu_memory_utilization=self.gpu_memory_utilization,
             max_num_seqs=self.max_num_seqs,
-            max_tokens_per_batch=self.max_tokens_per_batch,
             trust_remote_code=True,
             enforce_eager=False,
             # Optimizations
