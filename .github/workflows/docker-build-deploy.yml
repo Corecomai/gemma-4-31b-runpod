@@ -42,7 +42,8 @@ jobs:
           tags: |
             ghcr.io/corecomai/gemma-4-31b-runpod:latest
             ghcr.io/corecomai/gemma-4-31b-runpod:${{ github.sha }}
-          no-cache: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy:
     runs-on: ubuntu-latest
