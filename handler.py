@@ -29,10 +29,10 @@ class vLLMEngine:
         """Initialize the vLLM engine with optimal settings for Gemma-4-31B"""
 
         self.model = os.getenv('MODEL_NAME', 'google/gemma-4-31b-it')
-        self.quantization = os.getenv('QUANTIZATION', 'int4')  # int4, int8, None
+        self.quantization = os.getenv('QUANTIZATION', 'awq')  # awq, gptq, fp8, bitsandbytes, None
         self.tensor_parallel_size = int(os.getenv('TENSOR_PARALLEL_SIZE', '1'))
-        self.max_model_len = int(os.getenv('MAX_MODEL_LEN', '32768'))
-        self.gpu_memory_utilization = float(os.getenv('GPU_MEMORY_UTILIZATION', '0.90'))
+        self.max_model_len = int(os.getenv('MAX_MODEL_LEN', '40000'))
+        self.gpu_memory_utilization = float(os.getenv('GPU_MEMORY_UTILIZATION', '0.85'))
         self.max_num_seqs = int(os.getenv('MAX_NUM_SEQS', '64'))
 
         logger.info(f"Engine config: {self.get_config()}")
