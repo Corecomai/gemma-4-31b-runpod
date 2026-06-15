@@ -63,7 +63,7 @@ jobs:
           RESPONSE=$(curl -s "https://api.runpod.io/graphql?api_key=${RUNPOD_API_KEY}" \
             -H "Content-Type: application/json" \
             -d "{
-              \"query\": \"mutation { saveTemplate(input: { id: \\\"${TEMPLATE_ID}\\\", name: \\\"gemma-4-31b-runpod\\\", imageName: \\\"${IMAGE}\\\", containerDiskInGb: 50, volumeInGb: 0, dockerArgs: \\\"\\\", isServerless: true, env: [ { key: \\\"MODEL_NAME\\\", value: \\\"google/gemma-4-31b-it\\\" }, { key: \\\"QUANTIZATION\\\", value: \\\"awq\\\" }, { key: \\\"TENSOR_PARALLEL_SIZE\\\", value: \\\"1\\\" }, { key: \\\"MAX_MODEL_LEN\\\", value: \\\"40000\\\" }, { key: \\\"GPU_MEMORY_UTILIZATION\\\", value: \\\"0.85\\\" }, { key: \\\"MAX_NUM_SEQS\\\", value: \\\"64\\\" }, { key: \\\"VLLM_WORKER_MULTIPROC_METHOD\\\", value: \\\"spawn\\\" }, { key: \\\"HF_TOKEN\\\", value: \\\"{{ RUNPOD_SECRET_HF_TOKEN }}\\\" } ] }) { id name imageName } }\"
+              \"query\": \"mutation { saveTemplate(input: { id: \\\"${TEMPLATE_ID}\\\", name: \\\"gemma-4-31b-runpod\\\", imageName: \\\"${IMAGE}\\\", containerDiskInGb: 50, volumeInGb: 0, dockerArgs: \\\"\\\", isServerless: true, env: [ { key: \\\"MODEL_NAME\\\", value: \\\"google/gemma-4-31b-it\\\" }, { key: \\\"QUANTIZATION\\\", value: \\\"None\\\" }, { key: \\\"TENSOR_PARALLEL_SIZE\\\", value: \\\"1\\\" }, { key: \\\"MAX_MODEL_LEN\\\", value: \\\"40000\\\" }, { key: \\\"GPU_MEMORY_UTILIZATION\\\", value: \\\"0.85\\\" }, { key: \\\"MAX_NUM_SEQS\\\", value: \\\"64\\\" }, { key: \\\"VLLM_WORKER_MULTIPROC_METHOD\\\", value: \\\"spawn\\\" }, { key: \\\"HF_TOKEN\\\", value: \\\"{{ RUNPOD_SECRET_HF_TOKEN }}\\\" } ] }) { id name imageName } }\"
             }")
 
           echo "$RESPONSE"
